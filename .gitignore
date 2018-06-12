@@ -1,0 +1,10 @@
+_build
+.*.swp
+*.asm
+*.bin
+*.elf
+*.hex
+*.lst
+*.map
+*.o
+*.su
