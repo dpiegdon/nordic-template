@@ -9,7 +9,7 @@ It depends on:
 
  * the Nordic Semi nrfx driver submodule
  * the ARM CMSIS submodule
- * CMSIS Configuration Wizard (included from the nRF5 SDK)
+ * included CMSIS Configuration Wizard (copied from the latest nRF5 SDK, upstream seems to be `https://sourceforge.net/p/cmsisconfig/activity/`)
 
 
 Cloning this project
@@ -22,20 +22,20 @@ or, after cloning, `git submodule init && git submodule update`.
 Using this project as a template
 --------------------------------
 
-When you want to adapt this template for your (new) project,
-follow the following steps:
+If you want to adapt this template to your (new) project
+then follow the following steps:
 
 In the Makefile, change:
 
- * PROJECT_NAME
- * depending on your target platform, optionally CPU, CPUDEFINE and LINKER_SCRIPT
- * SRC_FILES
+ * `PROJECT_NAME`
+ * depending on your target platform, optionally `CPU`, `CPUDEFINE` and `LINKER_SCRIPT`
+ * `SRC_FILES`
  * optionally more
 
 Also:
 
- * move PROJECT_NAME.c to the new name
- * optionally pick the correct template headers `nrfx_glue.h`, `nrfx_log.h` and `nrfx_config.h` from nrfx/templates/
+ * move `project.c` to the new name of your project
+ * optionally pick the correct template headers `nrfx_glue.h`, `nrfx_log.h` and `nrfx_config.h` from `nrfx/templates/`
  * optionally run `make sdk_config` to configure the nordic nrfx submodule.
 
 
