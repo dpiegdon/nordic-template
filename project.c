@@ -20,8 +20,6 @@ nrfx_uart_t uart0 = NRFX_UART_INSTANCE(0);
 
 int main(void)
 {
-	nrfx_err_t err_code;
-
 	if(NRFX_SUCCESS != nrfx_uart_init(&uart0, &uart_config, NULL))
 		while(1) { /* endless */ };
 
