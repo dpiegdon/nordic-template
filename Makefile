@@ -87,8 +87,8 @@ DEBUG_OPTIMIZE_FLAGS += -flto
 
 CXXC_EXTRA_FLAGS += -nostartfiles -nodefaultlibs -nostdlib
 CXXC_EXTRA_FLAGS += -fdata-sections -ffunction-sections
-CXXC_EXTRA_FLAGS += -fstack-usage
-CXXC_EXTRA_FLAGS += -Wall -Wextra --pedantic
+CXXC_EXTRA_FLAGS += -fstack-usage -fsanitize=address
+CXXC_EXTRA_FLAGS += -Wall -Wextra -Wshadow --pedantic
 C_LANG_FLAGS += -std=c11
 CXX_LANG_FLAGS += -std=c++17
 
