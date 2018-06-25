@@ -111,7 +111,7 @@ $(BINARY_NAME).elf: $(OBJECTS)
 
 
 %.asm: %.elf
-	$(OBJDUMP) -dgCxw $< > $@
+	$(OBJDUMP) -dgCxwsSh --show-raw-insn $< > $@
 
 %.hex: %.elf
 	$(OBJCOPY) -O ihex $< $@
