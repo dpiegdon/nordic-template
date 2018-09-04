@@ -18,7 +18,32 @@ SOURCES_S := \
 	nrfx/mdk/gcc_startup_$(CPU).S
 
 SOURCES_C := \
-	nrfx/mdk/system_$(CPU).c \
+	nrfx/mdk/system_$(CPU).c							\
+	nRF-IEEE-802.15.4-radio-driver/src/fem/nrf_fem_control.c			\
+	nRF-IEEE-802.15.4-radio-driver/src/mac_features/nrf_802154_ack_timeout.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/mac_features/nrf_802154_csma_ca.c		\
+	nRF-IEEE-802.15.4-radio-driver/src/mac_features/nrf_802154_filter.c		\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154.c					\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_ack_pending_bit.c			\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_core.c				\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_core_hooks.c			\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_critical_section.c		\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_debug.c				\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_notification_direct.c		\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_pib.c				\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_priority_drop_direct.c		\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_request_direct.c			\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_revision.c			\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_rsch.c				\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_rssi.c				\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_rx_buffer.c			\
+	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_timer_coord.c			\
+	nRF-IEEE-802.15.4-radio-driver/src/platform/clock/nrf_802154_clock_nodrv.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/platform/hp_timer/nrf_802154_hp_timer.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/platform/lp_timer/nrf_802154_lp_timer_nodrv.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/platform/temperature/nrf_802154_temperature_none.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/raal/single_phy/single_phy.c			\
+	nRF-IEEE-802.15.4-radio-driver/src/timer_scheduler/nrf_802154_timer_sched.c	\
 	$(PROJECT_NAME).c
 
 SOURCES_CXX := \
@@ -66,6 +91,7 @@ DEFINE_FLAGS += -DCONFIG_GPIO_AS_PINRESET
 DEFINE_FLAGS += -D$(CPUDEFINE)
 DEFINE_FLAGS += -D__HEAP_SIZE=$(HEAPSIZE)
 DEFINE_FLAGS += -D__STACK_SIZE=$(STACKSIZE)
+DEFINE_FLAGS += -DRAAL_SINGLE_PHY -DNRF_802154_USE_RAW_API=0
 
 CXXC_INCLUDE_FLAGS += -Inrfx
 CXXC_INCLUDE_FLAGS += -Inrfx/drivers/include
@@ -73,6 +99,7 @@ CXXC_INCLUDE_FLAGS += -Inrfx/hal
 CXXC_INCLUDE_FLAGS += -Inrfx/mdk
 CXXC_INCLUDE_FLAGS += -Inrfx/soc
 CXXC_INCLUDE_FLAGS += -ICMSIS_5/CMSIS/Core/Include/
+CXXC_INCLUDE_FLAGS += -InRF-IEEE-802.15.4-radio-driver/src -InRF-IEEE-802.15.4-radio-driver/src/raal
 CXXC_INCLUDE_FLAGS += -I.
 
 DEBUG_OPTIMIZE_FLAGS += -O3 -g -gdwarf-4

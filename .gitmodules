@@ -4,3 +4,6 @@
 [submodule "CMSIS_5"]
 	path = CMSIS_5
 	url = https://github.com/ARM-software/CMSIS_5.git
+[submodule "nRF-IEEE-802.15.4-radio-driver"]
+	path = nRF-IEEE-802.15.4-radio-driver
+	url = https://github.com/NordicSemiconductor/nRF-IEEE-802.15.4-radio-driver.git
