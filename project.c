@@ -36,9 +36,13 @@ int main(void)
 	nrf_802154_receive();
 
 	nrf_gpio_cfg_output(led1);
+	nrf_gpio_pin_clear(led1);
 	nrf_gpio_cfg_output(led2);
+	nrf_gpio_pin_clear(led2);
 	nrf_gpio_cfg_output(led3);
+	nrf_gpio_pin_clear(led3);
 	nrf_gpio_cfg_output(led4);
+	nrf_gpio_pin_clear(led4);
 
 	while(1) {
 		nrf_gpio_pin_toggle(led1);
