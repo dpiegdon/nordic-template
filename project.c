@@ -16,7 +16,7 @@ void nop(void)
 const uint32_t led1 = NRF_GPIO_PIN_MAP(0,13);
 const uint32_t led2 = NRF_GPIO_PIN_MAP(0,14);
 const uint32_t led3 = NRF_GPIO_PIN_MAP(0,15);
-const uint32_t led4 = NRF_GPIO_PIN_MAP(0,15);
+const uint32_t led4 = NRF_GPIO_PIN_MAP(0,16);
 
 int main(void)
 {
