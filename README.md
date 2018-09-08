@@ -11,6 +11,10 @@ It depends on:
  * the ARM CMSIS submodule
  * included CMSIS Configuration Wizard (copied from the latest nRF5 SDK, upstream seems to be `https://sourceforge.net/p/cmsisconfig/activity/`)
 
+Also, in this branch:
+
+ * the Nordic Semi nRF 802.15.4 radio driver submodule
+
 
 Cloning this project
 --------------------
