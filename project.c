@@ -55,8 +55,11 @@ int main(void)
 	nrf_802154_extended_address_set(extended_address);
 	nrf_802154_pan_id_set(pan_id);
 	//nrf_802154_promiscuous_set(true); // for debugging
+	nrf_802154_tx_power_set(-20);
 	nrf_802154_channel_set(CHANNEL);
 	nrf_802154_receive();
+
+	printf("TX power currently set to %ddBm\r\n", (int)nrf_802154_tx_power_get());
 
 	bzero(message, sizeof(message));
 	// prepare frame header:
