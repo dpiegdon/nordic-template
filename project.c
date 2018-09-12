@@ -40,12 +40,25 @@ int main(void)
 	uint8_t pan_id[]           = {0xd0, 0x0f};
 	uint8_t short_address[]    = {0x12, 0x34};
 	uint8_t message[MAX_MESSAGE_SIZE];
+	uint32_t packet_id = 0;
 
 	nrf_gpio_cfg_output(led1);
 	nrf_gpio_pin_clear(led1);
 
-	bzero(message, sizeof(message));
+	if(NRFX_SUCCESS != nrfx_uart_init(&uart0, &uart_config, NULL))
+		while(1) { /* endless */ };
 
+	printf("\r\ninit 802.15.4 driver\r\n");
+
+	nrf_802154_init();
+	nrf_802154_short_address_set(short_address);
+	nrf_802154_extended_address_set(extended_address);
+	nrf_802154_pan_id_set(pan_id);
+	//nrf_802154_promiscuous_set(true); // for debugging
+	nrf_802154_channel_set(CHANNEL);
+	nrf_802154_receive();
+
+	bzero(message, sizeof(message));
 	// prepare frame header:
 	message[0] = 0x41;		// FCF, valued 0x9841
 	message[1] = 0x98;		// == 1001.1000.0100.0001
@@ -69,22 +82,7 @@ int main(void)
 	message[8] = 0;
 	// end of header
 
-	nrf_802154_init();
-	nrf_802154_short_address_set(short_address);
-	nrf_802154_extended_address_set(extended_address);
-	nrf_802154_pan_id_set(pan_id);
-	//nrf_802154_promiscuous_set(true); // for debugging
-	nrf_802154_channel_set(CHANNEL);
-	nrf_802154_receive();
-
-	nrf_gpio_pin_clear(led1);
-
-	if(NRFX_SUCCESS != nrfx_uart_init(&uart0, &uart_config, NULL))
-		while(1) { /* endless */ };
-
-	printf("\r\nstarting\r\n");
-
-	uint32_t packet_id = 0;
+	printf("starting\r\n");
 
 	while(1) {
 		message[2] = packet_id&0xff; // sequence number
