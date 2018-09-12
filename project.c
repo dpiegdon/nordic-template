@@ -6,8 +6,8 @@
 #include "nrf_gpio.h"
 
 const nrfx_uart_config_t uart_config = {
-	.pseltxd = NRF_GPIO_PIN_MAP(0,6),
-	.pselrxd = NRF_GPIO_PIN_MAP(0,8),
+	.pseltxd = NRF_GPIO_PIN_MAP(1,10),
+	.pselrxd = NRF_GPIO_PIN_MAP(1,11),
 	.pselcts = NRF_UART_PSEL_DISCONNECTED,
 	.pselrts = NRF_UART_PSEL_DISCONNECTED,
 	.hwfc = NRFX_UART_DEFAULT_CONFIG_HWFC,
