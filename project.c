@@ -122,9 +122,12 @@ int main(void)
 		message[2] = packet_id&0xff; // sequence number in header
 		// custom fields:
 		*(uint32_t*)&message[ 9] = packet_id; // packet id
-		*(uint32_t*)&message[13] = (NRF_TEMP->EVENTS_DATARDY)
-								? nrf_temp_read()
-								: 0xffff;
+		if(NRF_TEMP->EVENTS_DATARDY) {
+			*(uint32_t*)&message[13] = nrf_temp_read();
+			NRF_TEMP->EVENTS_DATARDY = 0;
+		} else {
+			*(uint32_t*)&message[13] = 0xffff;
+		}
 		NRF_TEMP->TASKS_START = 1; // start temp-measurement for next cycle
 
 		printf("TX starting transmit %lu:\r\n", packet_id);
