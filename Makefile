@@ -44,7 +44,7 @@ SOURCES_C := \
 	nRF-IEEE-802.15.4-radio-driver/src/platform/temperature/nrf_802154_temperature_none.c	\
 	nRF-IEEE-802.15.4-radio-driver/src/raal/single_phy/single_phy.c			\
 	nRF-IEEE-802.15.4-radio-driver/src/timer_scheduler/nrf_802154_timer_sched.c	\
-	nrfx/drivers/src/nrfx_uart.c							\
+	nrfx/drivers/src/nrfx_uarte.c							\
 	nrfx/drivers/src/nrfx_gpiote.c							\
 	nrfx/drivers/src/prs/nrfx_prs.c							\
 	syscalls.c									\

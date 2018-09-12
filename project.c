@@ -1,7 +1,7 @@
 
 #include <nrf_gpio.h>
 #include <nrfx_gpiote.h>
-#include <nrfx_uart.h>
+#include <nrfx_uarte.h>
 #include <nrf_802154.h>
 #include <nrf_temp.h>
 #include <stdint.h>
@@ -20,18 +20,18 @@ static const nrfx_gpiote_out_config_t led_config = {
 	.task_pin = false
 };
 
-static const nrfx_uart_config_t uart_config = {
+const nrfx_uarte_t uart0 = NRFX_UARTE_INSTANCE(0);
+
+static const nrfx_uarte_config_t uart_config = {
 	.pseltxd = NRF_GPIO_PIN_MAP(1,10),
 	.pselrxd = NRF_GPIO_PIN_MAP(1,11),
-	.pselcts = NRF_UART_PSEL_DISCONNECTED,
-	.pselrts = NRF_UART_PSEL_DISCONNECTED,
+	.pselcts = NRF_UARTE_PSEL_DISCONNECTED,
+	.pselrts = NRF_UARTE_PSEL_DISCONNECTED,
 	.hwfc = NRFX_UART_DEFAULT_CONFIG_HWFC,
 	.parity = NRFX_UART_DEFAULT_CONFIG_PARITY,
 	.baudrate = NRFX_UART_DEFAULT_CONFIG_BAUDRATE,
 	.interrupt_priority = NRFX_UART_DEFAULT_CONFIG_IRQ_PRIORITY
 };
-
-const nrfx_uart_t uart0 = NRFX_UART_INSTANCE(0);
 
 /* global state variables */
 
@@ -115,7 +115,7 @@ int main(void)
 
 	nrfx_gpiote_out_init(led, &led_config);
 
-	if(NRFX_SUCCESS != nrfx_uart_init(&uart0, &uart_config, NULL))
+	if(NRFX_SUCCESS != nrfx_uarte_init(&uart0, &uart_config, NULL))
 		while(1) { /* endless */ };
 
 	init_radio(extended_address, pan_id, short_address, false);
