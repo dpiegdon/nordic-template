@@ -36,6 +36,6 @@ Also:
 
  * move `project.c` to the new name of your project
  * optionally pick the correct template headers `nrfx_glue.h`, `nrfx_log.h` and `nrfx_config.h` from `nrfx/templates/`
- * optionally run `make sdk_config` to configure the nordic nrfx submodule.
+ * optionally run `make nrfx_config` to configure the nordic nrfx submodule.
 
 
