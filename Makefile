@@ -19,7 +19,7 @@ SOURCES_S := \
 
 SOURCES_C := \
 	nrfx/mdk/system_$(CPU).c \
-	nrfx/drivers/src/nrfx_uart.c \
+	nrfx/drivers/src/nrfx_uarte.c \
 	nrfx/drivers/src/prs/nrfx_prs.c \
 	syscalls.c \
 	$(PROJECT_NAME).c
