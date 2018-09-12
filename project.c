@@ -1,5 +1,5 @@
 
-#include <nrf_gpio.h>
+#include <nrfx_gpiote.h>
 #include <nrfx_uart.h>
 #include <nrf_802154.h>
 #include <nrf_temp.h>
@@ -13,6 +13,11 @@
 /* hardware configuration / muxing */
 
 static const uint32_t led = NRF_GPIO_PIN_MAP(1,13);
+
+static const nrfx_gpiote_out_config_t led_config = {
+	.init_state = GPIOTE_CONFIG_OUTINIT_Low,
+	.task_pin = false
+};
 
 static const nrfx_uart_config_t uart_config = {
 	.pseltxd = NRF_GPIO_PIN_MAP(1,10),
@@ -104,8 +109,10 @@ int main(void)
 	uint8_t message[MAX_MESSAGE_SIZE];
 	uint32_t packet_id = 0;
 
-	nrf_gpio_cfg_output(led);
-	nrf_gpio_pin_clear(led);
+	if(NRFX_SUCCESS != nrfx_gpiote_init())
+		while(1) { /* endless */ };
+
+	nrfx_gpiote_out_init(led, &led_config);
 
 	if(NRFX_SUCCESS != nrfx_uart_init(&uart0, &uart_config, NULL))
 		while(1) { /* endless */ };
@@ -180,7 +187,7 @@ void nrf_802154_transmit_failed(const uint8_t * p_frame, nrf_802154_tx_error_t e
 
 void nrf_802154_received(uint8_t * p_data, uint8_t length, int8_t power, uint8_t lqi)
 {
-	nrf_gpio_pin_toggle(led);
+	nrfx_gpiote_out_toggle(led);
 
 	printf("RX frame, power %d, lqi %u, payload len %u: ",
 			(int) power, (unsigned) lqi, (unsigned) length);
