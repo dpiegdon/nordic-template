@@ -56,6 +56,7 @@ SOURCES_CXX := \
 SDK_CONFIG_FILE := nrfx_config.h
 
 BMP_DEVICE ?= /dev/ttyACM0
+BMP_OTHER_DEVICE ?= /dev/ttyACM2
 
 ###
 
@@ -94,7 +95,7 @@ DEFINE_FLAGS += -DCONFIG_GPIO_AS_PINRESET
 DEFINE_FLAGS += -D$(CPUDEFINE)
 DEFINE_FLAGS += -D__HEAP_SIZE=$(HEAPSIZE)
 DEFINE_FLAGS += -D__STACK_SIZE=$(STACKSIZE)
-DEFINE_FLAGS += -DRAAL_SINGLE_PHY -DNRF_802154_USE_RAW_API=0
+DEFINE_FLAGS += -DRAAL_SINGLE_PHY -DNRF_802154_USE_RAW_API=0 -DNRF_802154_CLOCK_LFCLK_SOURCE=CLOCK_LFCLKSRC_SRC_Synth
 
 CXXC_INCLUDE_FLAGS += -Inrfx
 CXXC_INCLUDE_FLAGS += -Inrfx/drivers/include
@@ -159,9 +160,12 @@ clean:
 nrfx_config:
 	java -jar support/cmsisconfig/CMSIS_Configuration_Wizard.jar $(SDK_CONFIG_FILE)
 
-flash-bmp: $(BINARY_NAME).elf
+flash: $(BINARY_NAME).elf
 	# assuming:
 	#  * Black Magic Probe connected to $(BMP_DEVICE)
 	#  * compatible Nordic MCU connected via SWD
-	yes | $(GDB) $(BINARY_NAME).elf -ex 'target extended-remote $(BMP_DEVICE)' -ex 'mon swdp_scan' -ex 'attach 1' -ex 'mon erase_mass' -ex 'run' -ex 'load' -ex 'quit'
+	yes | $(GDB) $(BINARY_NAME).elf -ex 'target extended-remote $(BMP_DEVICE)'       -ex 'mon swdp_scan' -ex 'attach 1' -ex 'mon erase_mass' -ex 'run' -ex 'load' -ex 'quit'
+
+flash_other: $(BINARY_NAME).elf
+	yes | $(GDB) $(BINARY_NAME).elf -ex 'target extended-remote $(BMP_OTHER_DEVICE)' -ex 'mon swdp_scan' -ex 'attach 1' -ex 'mon erase_mass' -ex 'run' -ex 'load' -ex 'quit'
 
