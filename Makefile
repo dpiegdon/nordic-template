@@ -60,6 +60,10 @@ BMP_OTHER_DEVICE ?= /dev/ttyACM2
 
 ###
 
+# if you want to explicitly see what commands are executed for each step,
+# comment this:
+.SILENT:
+
 CROSSCOMPILE ?= arm-none-eabi-
 
 CC := $(CROSSCOMPILE)gcc
@@ -126,10 +130,12 @@ CXXFLAGS += $(MCU_FLAGS) $(DEBUG_OPTIMIZE_FLAGS) $(DEFINE_FLAGS) $(CXXC_INCLUDE_
 LDFLAGS += $(MCU_FLAGS) $(DEBUG_OPTIMIZE_FLAGS)
 LDFLAGS += -static
 LDFLAGS += -Wl,--start-group -lgcc -lm -lc -lg -lstdc++ -lnosys -Wl,--end-group
-LDFLAGS += -Wl,--gc-sections -Wl,--print-gc-sections -Wl,--cref,-Map=$(@:%.elf=%.map)
+LDFLAGS += -Wl,--gc-sections -Wl,--cref,-Map=$(@:%.elf=%.map)
 LDFLAGS += -Lnrfx/mdk -T$(LINKER_SCRIPT)
+# if you want to have garbage-collected sections listed during linker stage:
+#LDFLAGS += -Wl,--print-gc-sections
 # if you don't want the warnings about sections removed:
-#LDFLAGS += -Wl,--no-print-gc-sections
+LDFLAGS += -Wl,--no-print-gc-sections
 
 ###
 
