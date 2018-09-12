@@ -1,4 +1,5 @@
 
+#include <nrf_gpio.h>
 #include <nrfx_gpiote.h>
 #include <nrfx_uart.h>
 #include <nrf_802154.h>
