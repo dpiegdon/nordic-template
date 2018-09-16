@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2017 - 2018, Nordic Semiconductor ASA
+ * 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -32,12 +33,6 @@
 #ifndef NRFX_GLUE_H__
 #define NRFX_GLUE_H__
 
-// THIS IS A TEMPLATE FILE.
-// It should be copied to a suitable location within the host environment into
-// which nrfx is integrated, and the following macros should be provided with
-// appropriate implementations.
-// And this comment should be removed from the customized file.
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -53,7 +48,7 @@ extern "C" {
 
 // Uncomment this line to use the standard MDK way of binding IRQ handlers
 // at linking time.
-//#include <soc/nrfx_irqs.h>
+#include <soc/nrfx_irqs.h>
 
 //------------------------------------------------------------------------------
 
@@ -62,16 +57,32 @@ extern "C" {
  *
  * @param expression  Expression to evaluate.
  */
-#define NRFX_ASSERT(expression)
+#define NRFX_ASSERT(expression)     assert(expression)
 
+#include <assert.h>
 /**
  * @brief Macro for placing a compile time assertion.
  *
  * @param expression  Expression to evaluate.
  */
-#define NRFX_STATIC_ASSERT(expression)
+#define NRFX_STATIC_ASSERT(expression)  _Static_assert(expression, "ASSERT")
 
 //------------------------------------------------------------------------------
+
+#ifdef NRF51
+#ifdef SOFTDEVICE_PRESENT
+#define INTERRUPT_PRIORITY_IS_VALID(pri) (((pri) == 1) || ((pri) == 3))
+#else
+#define INTERRUPT_PRIORITY_IS_VALID(pri) ((pri) < 4)
+#endif //SOFTDEVICE_PRESENT
+#else
+#ifdef SOFTDEVICE_PRESENT
+#define INTERRUPT_PRIORITY_IS_VALID(pri) ((((pri) > 1) && ((pri) < 4)) || \
+                                          (((pri) > 4) && ((pri) < 8)))
+#else
+#define INTERRUPT_PRIORITY_IS_VALID(pri) ((pri) < 8)
+#endif //SOFTDEVICE_PRESENT
+#endif //NRF52
 
 /**
  * @brief Macro for setting the priority of a specific IRQ.
@@ -79,14 +90,26 @@ extern "C" {
  * @param irq_number  IRQ number.
  * @param priority    Priority to set.
  */
-#define NRFX_IRQ_PRIORITY_SET(irq_number, priority)
+#define NRFX_IRQ_PRIORITY_SET(irq_number, priority) \
+    _NRFX_IRQ_PRIORITY_SET(irq_number, priority)
+static inline void _NRFX_IRQ_PRIORITY_SET(IRQn_Type irq_number,
+                                          uint8_t   priority)
+{
+    NRFX_ASSERT(INTERRUPT_PRIORITY_IS_VALID(priority));
+    NVIC_SetPriority(irq_number, priority);
+}
 
 /**
  * @brief Macro for enabling a specific IRQ.
  *
  * @param irq_number  IRQ number.
  */
-#define NRFX_IRQ_ENABLE(irq_number)
+#define NRFX_IRQ_ENABLE(irq_number)  _NRFX_IRQ_ENABLE(irq_number)
+static inline void _NRFX_IRQ_ENABLE(IRQn_Type irq_number)
+{
+    NVIC_ClearPendingIRQ(irq_number);
+    NVIC_EnableIRQ(irq_number);
+}
 
 /**
  * @brief Macro for checking if a specific IRQ is enabled.
@@ -96,28 +119,44 @@ extern "C" {
  * @retval true  If the IRQ is enabled.
  * @retval false Otherwise.
  */
-#define NRFX_IRQ_IS_ENABLED(irq_number)
+#define NRFX_IRQ_IS_ENABLED(irq_number)  _NRFX_IRQ_IS_ENABLED(irq_number)
+static inline bool _NRFX_IRQ_IS_ENABLED(IRQn_Type irq_number)
+{
+    return 0 != (NVIC->ISER[irq_number / 32] & (1UL << (irq_number % 32)));
+}
 
 /**
  * @brief Macro for disabling a specific IRQ.
  *
  * @param irq_number  IRQ number.
  */
-#define NRFX_IRQ_DISABLE(irq_number)
+#define NRFX_IRQ_DISABLE(irq_number)  _NRFX_IRQ_DISABLE(irq_number)
+static inline void _NRFX_IRQ_DISABLE(IRQn_Type irq_number)
+{
+    NVIC_DisableIRQ(irq_number);
+}
 
 /**
  * @brief Macro for setting a specific IRQ as pending.
  *
  * @param irq_number  IRQ number.
  */
-#define NRFX_IRQ_PENDING_SET(irq_number)
+#define NRFX_IRQ_PENDING_SET(irq_number) _NRFX_IRQ_PENDING_SET(irq_number)
+static inline void _NRFX_IRQ_PENDING_SET(IRQn_Type irq_number)
+{
+    NVIC_SetPendingIRQ(irq_number);
+}
 
 /**
  * @brief Macro for clearing the pending status of a specific IRQ.
  *
  * @param irq_number  IRQ number.
  */
-#define NRFX_IRQ_PENDING_CLEAR(irq_number)
+#define NRFX_IRQ_PENDING_CLEAR(irq_number) _NRFX_IRQ_PENDING_CLEAR(irq_number)
+static inline void _NRFX_IRQ_PENDING_CLEAR(IRQn_Type irq_number)
+{
+    NVIC_ClearPendingIRQ(irq_number);
+}
 
 /**
  * @brief Macro for checking the pending status of a specific IRQ.
@@ -125,7 +164,11 @@ extern "C" {
  * @retval true  If the IRQ is pending.
  * @retval false Otherwise.
  */
-#define NRFX_IRQ_IS_PENDING(irq_number)
+#define NRFX_IRQ_IS_PENDING(irq_number) _NRFX_IRQ_IS_PENDING(irq_number)
+static inline bool _NRFX_IRQ_IS_PENDING(IRQn_Type irq_number)
+{
+    return (NVIC_GetPendingIRQ(irq_number) == 1);
+}
 
 /**
  * @brief Macro for entering into a critical section.
@@ -145,14 +188,16 @@ extern "C" {
  *        A compilation error is generated if the DWT unit is not present
  *        in the SoC used.
  */
-#define NRFX_DELAY_DWT_BASED    0
+#define NRFX_DELAY_DWT_BASED 0
 
 /**
  * @brief Macro for delaying the code execution for at least the specified time.
  *
  * @param us_time Number of microseconds to wait.
  */
-#define NRFX_DELAY_US(us_time)
+#include <soc/nrfx_coredep.h>
+
+#define NRFX_DELAY_US(us_time) nrfx_coredep_delay_us(us_time)
 
 //------------------------------------------------------------------------------
 
@@ -165,6 +210,12 @@ extern "C" {
 #define NRFX_CUSTOM_ERROR_CODES 0
 
 //------------------------------------------------------------------------------
+
+/* if you want to use one of the following, you might want to take a look into
+ * the nRF5 SDK 15.0.0, files:
+ *	components/libraries/util/sdk_resources.h
+ *	integration/nrfx/nrfx_glue.h
+ */
 
 /**
  * @brief Bitmask defining PPI channels reserved to be used outside of nrfx.

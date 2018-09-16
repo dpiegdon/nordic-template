@@ -115,12 +115,13 @@ DEBUG_OPTIMIZE_FLAGS += -O3 -g -gdwarf-4
 
 # if you are using LTO,
 DEBUG_OPTIMIZE_FLAGS += -flto
-# listings won't be worth anything, as LTO generated 'GIMPLE' instead of code.
+CXXC_EXTRA_FLAGS += -fsanitize=address
+# listings won't be worth anything, as LTO generated 'GIMPLE' instead of code. Also, ASAN does not work without LTO.
 #CXXC_EXTRA_FLAGS += -Wa,-aghlms=$<.lst
 
 CXXC_EXTRA_FLAGS += -nostartfiles -nodefaultlibs -nostdlib
 CXXC_EXTRA_FLAGS += -fdata-sections -ffunction-sections
-CXXC_EXTRA_FLAGS += -fstack-usage -fsanitize=address
+CXXC_EXTRA_FLAGS += -fstack-usage
 CXXC_EXTRA_FLAGS += -Wall -Wextra -Wshadow --pedantic
 C_LANG_FLAGS += -std=c11
 CXX_LANG_FLAGS += -std=c++17
