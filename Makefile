@@ -19,6 +19,8 @@ SOURCES_S := \
 
 SOURCES_C := \
 	nrfx/mdk/system_$(CPU).c \
+	nrfx/drivers/src/nrfx_gpiote.c \
+	nrfx/drivers/src/nrfx_timer.c \
 	$(PROJECT_NAME).c
 
 SOURCES_CXX := \
