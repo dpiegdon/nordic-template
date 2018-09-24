@@ -194,6 +194,8 @@ void nrf_802154_received(uint8_t * p_data, uint8_t length, int8_t power, uint8_t
 			(int) power, (unsigned) lqi, (unsigned) length);
 	for(int i = 0; i < length; ++i)
 		printf("%02x ", p_data[i]);
+	if(length == MAX_MESSAGE_SIZE+2)
+		printf("-- temp: %5.2fC", (*(uint32_t*)&p_data[13])/4.);
 	printf("\r\n");
 
 	nrf_802154_buffer_free(p_data);
