@@ -50,6 +50,8 @@ int main(void)
 		uint8_t txbuf[2];
 		uint8_t rxbuf[2];
 
+		// this reads the accelerometer data registers from an
+		// MPU-9250 motion sensor and prints them on UART:
 		for(int r = 0x3b; r <= 0x40; ++r) {
 			const bool read = true;
 			memset(txbuf, 0, sizeof(txbuf));
