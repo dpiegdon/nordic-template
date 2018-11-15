@@ -86,7 +86,7 @@ CXXC_INCLUDE_FLAGS += -I.
 DEBUG_OPTIMIZE_FLAGS += -O3 -g -gdwarf-4
 
 # if you are using LTO,
-DEBUG_OPTIMIZE_FLAGS += -flto
+DEBUG_OPTIMIZE_FLAGS += -flto -fdevirtualize-at-ltrans
 CXXC_EXTRA_FLAGS += -fsanitize=address
 # listings won't be worth anything, as LTO generated 'GIMPLE' instead of code. Also, ASAN does not work without LTO.
 #CXXC_EXTRA_FLAGS += -Wa,-aghlms=$<.lst
