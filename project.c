@@ -10,6 +10,7 @@
 
 #define MAX_MESSAGE_SIZE 17
 #define CHANNEL          23
+// chan23 center is 2465MHz
 
 /* hardware configuration / muxing */
 
