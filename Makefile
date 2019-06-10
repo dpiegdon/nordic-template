@@ -19,13 +19,18 @@ SOURCES_S := \
 
 SOURCES_C := \
 	nrfx/mdk/system_$(CPU).c							\
+	nRF-IEEE-802.15.4-radio-driver/src/fal/nrf_802154_fal.c				\
 	nRF-IEEE-802.15.4-radio-driver/src/fem/nrf_fem_control.c			\
-	nRF-IEEE-802.15.4-radio-driver/src/mac_features/nrf_802154_ack_timeout.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/mac_features/ack_generator/nrf_802154_ack_data.c		\
+	nRF-IEEE-802.15.4-radio-driver/src/mac_features/ack_generator/nrf_802154_ack_generator.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/mac_features/ack_generator/nrf_802154_enh_ack_generator.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/mac_features/ack_generator/nrf_802154_imm_ack_generator.c	\
 	nRF-IEEE-802.15.4-radio-driver/src/mac_features/nrf_802154_csma_ca.c		\
-	nRF-IEEE-802.15.4-radio-driver/src/mac_features/nrf_802154_filter.c		\
 	nRF-IEEE-802.15.4-radio-driver/src/mac_features/nrf_802154_delayed_trx.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/mac_features/nrf_802154_filter.c		\
+	nRF-IEEE-802.15.4-radio-driver/src/mac_features/nrf_802154_frame_parser.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/mac_features/nrf_802154_precise_ack_timeout.c	\
 	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154.c					\
-	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_ack_pending_bit.c			\
 	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_core.c				\
 	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_core_hooks.c			\
 	nRF-IEEE-802.15.4-radio-driver/src/nrf_802154_critical_section.c		\
@@ -44,6 +49,7 @@ SOURCES_C := \
 	nRF-IEEE-802.15.4-radio-driver/src/platform/clock/nrf_802154_clock_nodrv.c	\
 	nRF-IEEE-802.15.4-radio-driver/src/platform/hp_timer/nrf_802154_hp_timer.c	\
 	nRF-IEEE-802.15.4-radio-driver/src/platform/lp_timer/nrf_802154_lp_timer_nodrv.c	\
+	nRF-IEEE-802.15.4-radio-driver/src/platform/random/nrf_802154_random_stdlib.c	\
 	nRF-IEEE-802.15.4-radio-driver/src/platform/temperature/nrf_802154_temperature_none.c	\
 	nRF-IEEE-802.15.4-radio-driver/src/timer_scheduler/nrf_802154_timer_sched.c	\
 	nrfx/drivers/src/nrfx_uarte.c							\
