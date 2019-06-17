@@ -177,12 +177,26 @@ clean:
 nrfx_config:
 	java -jar support/cmsisconfig/CMSIS_Configuration_Wizard.jar $(SDK_CONFIG_FILE)
 
-flash: $(BINARY_NAME).elf
+flash-bmp: $(BINARY_NAME).elf
 	# assuming:
 	#  * Black Magic Probe connected to $(BMP_DEVICE)
 	#  * compatible Nordic MCU connected via SWD
-	yes | $(GDB) $(BINARY_NAME).elf -ex 'target extended-remote $(BMP_DEVICE)'       -ex 'mon swdp_scan' -ex 'attach 1' -ex 'mon erase_mass' -ex 'run' -ex 'load' -ex 'quit'
-
-flash_other: $(BINARY_NAME).elf
-	yes | $(GDB) $(BINARY_NAME).elf -ex 'target extended-remote $(BMP_OTHER_DEVICE)' -ex 'mon swdp_scan' -ex 'attach 1' -ex 'mon erase_mass' -ex 'run' -ex 'load' -ex 'quit'
-
+	$(GDB) $(BINARY_NAME).elf \
+		-ex 'set confirm off' \
+		-ex 'target extended-remote $(BMP_DEVICE)' \
+		-ex 'mon assert_srst scan' \
+		-ex 'mon swdp_scan' \
+		-ex 'attach 1' \
+		-ex 'mon erase_mass' \
+		-ex 'run' \
+		-ex 'load' \
+		-ex 'compare-sections' \
+		-ex 'quit'
+	$(GDB) $(BINARY_NAME).elf \
+		-ex 'set confirm off' \
+		-ex 'target extended-remote $(BMP_DEVICE)' \
+		-ex 'mon assert_srst scan' \
+		-ex 'mon swdp_scan' \
+		-ex 'attach 1' \
+		-ex 'kill' \
+		-ex 'quit'
