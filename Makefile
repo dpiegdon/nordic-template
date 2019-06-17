@@ -2,6 +2,7 @@
 PROJECT_NAME := project
 
 CPU := nrf52840
+CPU_CLASS := nrf52
 CPUDEFINE := NRF52840_XXAA
 LINKER_SCRIPT := nrf52840_xxaa.ld
 HEAPSIZE := 8192
@@ -19,6 +20,17 @@ SOURCES_S := \
 
 SOURCES_C := \
 	nrfx/mdk/system_$(CPU).c \
+	freertos-source/lib/FreeRTOS/event_groups.c \
+	freertos-source/lib/FreeRTOS/list.c \
+	freertos-source/lib/FreeRTOS/queue.c \
+	freertos-source/lib/FreeRTOS/stream_buffer.c \
+	freertos-source/lib/FreeRTOS/timers.c \
+	freertos-source/lib/FreeRTOS/tasks.c \
+	freertos-source/lib/FreeRTOS/portable/MemMang/heap_3.c \
+	freertos-port/CMSIS/$(CPU_CLASS)/port_cmsis.c \
+	freertos-port/CMSIS/$(CPU_CLASS)/port_cmsis_systick.c \
+	freertos-port/GCC/$(CPU_CLASS)/port.c \
+	nrfx/drivers/src/nrfx_clock.c \
 	$(PROJECT_NAME).c
 
 SOURCES_CXX := \
@@ -77,14 +89,19 @@ CXXC_INCLUDE_FLAGS += -Inrfx/drivers/include
 CXXC_INCLUDE_FLAGS += -Inrfx/hal
 CXXC_INCLUDE_FLAGS += -Inrfx/mdk
 CXXC_INCLUDE_FLAGS += -Inrfx/soc
-CXXC_INCLUDE_FLAGS += -ICMSIS_5/CMSIS/Core/Include/
+CXXC_INCLUDE_FLAGS += -Inrfx-util
+CXXC_INCLUDE_FLAGS += -ICMSIS_5/CMSIS/Core/Include
+CXXC_INCLUDE_FLAGS += -Ifreertos-config
+CXXC_INCLUDE_FLAGS += -Ifreertos-port/CMSIS/$(CPU_CLASS) -Ifreertos-port/GCC/$(CPU_CLASS)
+CXXC_INCLUDE_FLAGS += -Ifreertos-source/lib/include
+CXXC_INCLUDE_FLAGS += -Ifreertos-source/lib/include/private
 CXXC_INCLUDE_FLAGS += -I.
 
 DEBUG_OPTIMIZE_FLAGS += -O3 -g -gdwarf-4
 
 # if you are using LTO,
-DEBUG_OPTIMIZE_FLAGS += -flto -fdevirtualize-at-ltrans
-CXXC_EXTRA_FLAGS += -fsanitize=address
+#DEBUG_OPTIMIZE_FLAGS += -flto -fdevirtualize-at-ltrans
+#CXXC_EXTRA_FLAGS += -fsanitize=address
 # listings won't be worth anything, as LTO generated 'GIMPLE' instead of code. Also, ASAN does not work without LTO.
 #CXXC_EXTRA_FLAGS += -Wa,-aghlms=$<.lst
 
