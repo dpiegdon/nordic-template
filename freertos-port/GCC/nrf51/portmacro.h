@@ -31,6 +31,7 @@
 #define PORTMACRO_H
 
 #include "portmacro_cmsis.h"
+#include "barriers.h"
 
 #endif /* PORTMACRO_H */
 

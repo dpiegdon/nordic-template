@@ -20,13 +20,13 @@ SOURCES_S := \
 
 SOURCES_C := \
 	nrfx/mdk/system_$(CPU).c \
-	freertos-source/lib/FreeRTOS/event_groups.c \
-	freertos-source/lib/FreeRTOS/list.c \
-	freertos-source/lib/FreeRTOS/queue.c \
-	freertos-source/lib/FreeRTOS/stream_buffer.c \
-	freertos-source/lib/FreeRTOS/timers.c \
-	freertos-source/lib/FreeRTOS/tasks.c \
-	freertos-source/lib/FreeRTOS/portable/MemMang/heap_3.c \
+	freertos-source/freertos_kernel/event_groups.c \
+	freertos-source/freertos_kernel/list.c \
+	freertos-source/freertos_kernel/queue.c \
+	freertos-source/freertos_kernel/stream_buffer.c \
+	freertos-source/freertos_kernel/timers.c \
+	freertos-source/freertos_kernel/tasks.c \
+	freertos-source/freertos_kernel/portable/MemMang/heap_3.c \
 	freertos-port/CMSIS/$(CPU_CLASS)/port_cmsis.c \
 	freertos-port/CMSIS/$(CPU_CLASS)/port_cmsis_systick.c \
 	freertos-port/GCC/$(CPU_CLASS)/port.c \
@@ -92,9 +92,8 @@ CXXC_INCLUDE_FLAGS += -Inrfx/soc
 CXXC_INCLUDE_FLAGS += -Inrfx-util
 CXXC_INCLUDE_FLAGS += -ICMSIS_5/CMSIS/Core/Include
 CXXC_INCLUDE_FLAGS += -Ifreertos-config
-CXXC_INCLUDE_FLAGS += -Ifreertos-port/CMSIS/$(CPU_CLASS) -Ifreertos-port/GCC/$(CPU_CLASS)
-CXXC_INCLUDE_FLAGS += -Ifreertos-source/lib/include
-CXXC_INCLUDE_FLAGS += -Ifreertos-source/lib/include/private
+CXXC_INCLUDE_FLAGS += -Ifreertos-port/CMSIS/$(CPU_CLASS) -Ifreertos-port/GCC/$(CPU_CLASS) -Ifreertos-port
+CXXC_INCLUDE_FLAGS += -Ifreertos-source/freertos_kernel/include
 CXXC_INCLUDE_FLAGS += -I.
 
 DEBUG_OPTIMIZE_FLAGS += -O3 -g -gdwarf-4
