@@ -200,3 +200,11 @@ flash-bmp: $(BINARY_NAME).elf
 		-ex 'attach 1' \
 		-ex 'kill' \
 		-ex 'quit'
+
+flash-jlink: $(BINARY_NAME).bin
+	# assuming:
+	#  * any type of Segger JLINK that is usable with an nRF52 CPU
+	#    (e.g. the embedded jlink on the DK)
+	#  * compatible Nordic MCU connected via SWD
+	#  * installed JLink Software
+	printf "erase\nloadfile $<\nr\nq\n" | JLinkExe -nogui 1 -autoconnect 1 -device $(CPUDEFINE) -if swd -speed 4000
