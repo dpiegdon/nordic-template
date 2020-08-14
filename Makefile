@@ -107,6 +107,8 @@ LDFLAGS += -Lnrfx/mdk -T$(LINKER_SCRIPT)
 #LDFLAGS += -Wl,--print-gc-sections
 # if you don't want the warnings about sections removed:
 LDFLAGS += -Wl,--no-print-gc-sections
+# print info on memory usage?
+LDFLAGS += -Wl,--print-memory-usage
 
 ###
 
